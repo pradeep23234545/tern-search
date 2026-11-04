@@ -1,0 +1,72 @@
+# Tern: private search on SearXNG
+# Based on the official template:
+#   https://raw.githubusercontent.com/searxng/searxng/master/container/docker-compose.yml
+# Docs: https://docs.searxng.org/admin/installation-docker.html
+#
+# Local use (default):     docker compose up -d
+# Public HTTPS (optional): docker compose --profile public up -d   (see docs/03-setup-guide.md)
+
+name: tern
+
+services:
+  core:
+    container_name: tern-core
+    image: docker.io/searxng/searxng:${SEARXNG_VERSION:-latest}
+    restart: unless-stopped
+    ports:
+      # BIND_ADDRESS=127.0.0.1 -> only this computer can open it (safest default)
+      # BIND_ADDRESS=0.0.0.0   -> phones/laptops on your Wi-Fi can open it too
+      - "${BIND_ADDRESS:-127.0.0.1}:${HOST_PORT:-8888}:8080"
+    env_file: ./.env
+    environment:
+      # Connect SearXNG to the Valkey cache over the private Docker network.
+      - SEARXNG_VALKEY_URL=valkey://valkey:6379/0
+    volumes:
+      - ./core-config/:/etc/searxng/:Z
+      - core-data:/var/cache/searxng/
+      # ---- Tern theme (read-only overrides of the "simple" theme) ----
+      - ./theme/static/:/usr/local/searxng/searx/static/themes/simple/tern/:ro
+      - ./theme/templates/tern/:/usr/local/searxng/searx/templates/simple/tern/:ro
+      - ./theme/templates/base.html:/usr/local/searxng/searx/templates/simple/base.html:ro
+      - ./theme/templates/index.html:/usr/local/searxng/searx/templates/simple/index.html:ro
+      - ./theme/templates/page_with_header.html:/usr/local/searxng/searx/templates/simple/page_with_header.html:ro
+      - ./theme/templates/manifest.json:/usr/local/searxng/searx/templates/simple/manifest.json:ro
+      - ./theme/templates/searxng-wordmark.min.svg:/usr/local/searxng/searx/templates/simple/searxng-wordmark.min.svg:ro
+    depends_on:
+      - valkey
+
+  valkey:
+    container_name: tern-valkey
+    image: docker.io/valkey/valkey:9-alpine
+    command: valkey-server --save 300 1 --save 60 1000 --loglevel warning
+    restart: unless-stopped
+    # No "ports:" on purpose: the cache is reachable only inside the Docker network.
+    volumes:
+      - valkey-data:/data/
+
+  # Optional HTTPS reverse proxy for a public server. Not started unless you
+  # pass "--profile public". Needs a (sub)domain pointing at the server.
+  caddy:
+    container_name: tern-caddy
+    image: docker.io/library/caddy:2-alpine
+    profiles: ["public"]
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      - TERN_HOSTNAME=${TERN_HOSTNAME:-localhost}
+      - TERN_ACME_EMAIL=${TERN_ACME_EMAIL:-internal}
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data/
+      - caddy-config:/config/
+    depends_on:
+      - core
+
+volumes:
+  core-data:
+  valkey-data:
+  caddy-data:
+  caddy-config:

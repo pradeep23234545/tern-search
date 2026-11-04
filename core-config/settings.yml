@@ -1,0 +1,63 @@
+# Tern: SearXNG settings
+# Only the values that differ from SearXNG's defaults are listed here.
+# Full reference: https://docs.searxng.org/admin/settings/
+# After editing:  docker compose restart core
+
+use_default_settings: true
+
+general:
+  instance_name: "Tern"
+  # Shows the "Engine stats" page at /stats (counts only, no queries stored).
+  enable_metrics: true
+
+brand:
+  # AGPL: if you share your modified instance with others, link your own source.
+  # Replace with your GitHub repository URL.
+  custom:
+    links:
+      "Tern source": "https://github.com/YOUR-GITHUB-USERNAME/tern-search"
+
+search:
+  # 0 = off, 1 = moderate, 2 = strict (the video used 2 for kids).
+  safe_search: 1
+  # Suggestions while typing. Each keystroke is sent from the SERVER (not your
+  # browser) to this provider. Set to "" to turn it off completely.
+  autocomplete: "duckduckgo"
+  # Output formats. "json" enables the API: /search?q=test&format=json
+  formats:
+    - html
+    - json
+    - csv
+    - rss
+
+server:
+  # secret_key comes from SEARXNG_SECRET in .env (never put it in this file).
+  # GET keeps the back button working (already the default; kept explicit).
+  method: "GET"
+  # Fetch result images through your server so sites never see your IP.
+  image_proxy: true
+  # Bot protection: off for local use, set SEARXNG_LIMITER=true in .env when public.
+  limiter: false
+  public_instance: false
+
+valkey:
+  # Overridden by SEARXNG_VALKEY_URL in docker-compose.yml.
+  url: valkey://valkey:6379/0
+
+ui:
+  default_theme: simple
+  theme_args:
+    # auto = follow your device's light/dark setting. Users can change it in Preferences.
+    simple_style: auto
+  query_in_title: false
+  hotkeys: default
+  url_formatting: pretty
+  center_alignment: false
+
+# Example: turn individual engines on or off by name.
+# The full engine list is under Preferences -> Engines.
+engines:
+  - name: wikidata
+    disabled: false
+  - name: brave
+    disabled: false

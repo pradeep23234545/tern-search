@@ -1,0 +1,14 @@
+{#- Tern override of searx/templates/simple/index.html (upstream 2026.11.2). -#}
+{% extends "simple/base.html" %}
+{% from 'simple/icons.html' import icon_big %}
+{% block content %}
+<div class="index tern-home">
+    <div class="title tern-brand">
+        {% include 'simple/tern/mark.svg' without context %}
+        <h1>{{ instance_name }}</h1>
+    </div>
+    {% include 'simple/simple_search.html' %}
+    <p class="tern-home__hint">{{ _('Press') }} <kbd>/</kbd> {{ _('to search') }}</p>
+    {% include 'simple/tern/quicklinks.html' %}
+</div>
+{% endblock %}

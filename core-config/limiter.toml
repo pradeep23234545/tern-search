@@ -1,0 +1,25 @@
+# Bot-detection settings, used only when SEARXNG_LIMITER=true (public instances).
+# Keys copied from the defaults shipped in the 2026.11.2 image
+# (/usr/local/searxng/searx/limiter.toml). Docs:
+# https://docs.searxng.org/admin/searx.limiter.html
+
+[botdetection]
+ipv4_prefix = 32
+ipv6_prefix = 48
+
+# Caddy runs in the same Docker network, so trust Docker's private ranges
+# to read the real client IP from X-Forwarded-For.
+trusted_proxies = [
+  '127.0.0.0/8',
+  '::1',
+  '172.16.0.0/12',
+]
+
+[botdetection.ip_limit]
+filter_link_local = false
+# Requires browsers to load a small CSS token before searching: blocks simple bots.
+link_token = true
+
+[botdetection.ip_lists]
+block_ip = []
+pass_ip = []

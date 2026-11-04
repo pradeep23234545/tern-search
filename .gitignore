@@ -1,0 +1,22 @@
+# Secrets: never commit
+.env
+*.env.local
+
+# Backups and logs
+backups/
+*.log
+*.tar.gz
+*.zip
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# Python
+__pycache__/
+
+# Exported report files (regenerate from Markdown)
+docs/*.pdf
+docs/*.docx

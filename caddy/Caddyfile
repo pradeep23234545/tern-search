@@ -1,0 +1,24 @@
+# Optional HTTPS reverse proxy (docker compose --profile public up -d).
+# Caddy gets and renews a free Let's Encrypt certificate automatically.
+# Docs: https://caddyserver.com/docs/caddyfile
+
+{
+	email {$TERN_ACME_EMAIL}
+}
+
+{$TERN_HOSTNAME} {
+	encode zstd gzip
+
+	header {
+		# Only allow resources from this server. Tern loads nothing external.
+		Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; manifest-src 'self'; upgrade-insecure-requests"
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "accelerometer=(), camera=(), geolocation=(), microphone=(), payment=(), usb=()"
+		X-Robots-Tag "noindex, noarchive, nofollow"
+		-Server
+	}
+
+	reverse_proxy core:8080
+}

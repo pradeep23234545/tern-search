@@ -1,0 +1,26 @@
+{#-
+  QUICK LINKS: edit this list to change the tiles on the home page.
+  One line per tile: ("Label", "https://address/"). Keep 8 or fewer.
+  Tiles use letter icons on purpose: loading each site's real favicon would
+  make your browser contact those sites every time you open the home page.
+  After editing, run:  docker compose up -d --force-recreate core
+-#}
+{%- set quick_links = [
+  ("Wikipedia",      "https://en.wikipedia.org/"),
+  ("GitHub",         "https://github.com/"),
+  ("Stack Overflow", "https://stackoverflow.com/"),
+  ("MDN Web Docs",   "https://developer.mozilla.org/"),
+  ("OpenStreetMap",  "https://www.openstreetmap.org/"),
+  ("arXiv",          "https://arxiv.org/"),
+  ("YouTube",        "https://www.youtube.com/"),
+  ("SearXNG Docs",   "https://docs.searxng.org/"),
+] -%}
+{%- if quick_links -%}
+<nav class="tern-quicklinks" aria-label="Quick links">
+  <ul>
+    {%- for label, url in quick_links %}
+    <li><a class="tern-tile" href="{{ url }}" rel="noreferrer"><span class="tern-tile__icon" aria-hidden="true">{{ label[0]|upper }}</span><span class="tern-tile__label">{{ label }}</span></a></li>
+    {%- endfor %}
+  </ul>
+</nav>
+{%- endif -%}

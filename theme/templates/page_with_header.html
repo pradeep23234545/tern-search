@@ -1,0 +1,9 @@
+{#- Tern override of searx/templates/simple/page_with_header.html (upstream 2026.11.2).
+    Used by Preferences, About and Stats. TERN: logo mark + name instead of searxng.png -#}
+{%- set body_class = "page_with_header" -%}
+{%- extends "simple/base.html" -%}
+{%- block header -%}
+  <a class="tern-page-brand" href="{{ url_for('index') }}">{{- '' -}}
+    {% include 'simple/tern/mark.svg' without context %}<span>{{ instance_name }}</span>{{- '' -}}
+  </a>{{- '' -}}
+{%- endblock -%}

@@ -1,0 +1,176 @@
+/*
+ * Tern design tokens
+ * ------------------
+ * The single source of truth for the Tern look. Change the values here and the
+ * whole interface follows. Component CSS (tern.css) must only use these
+ * variables, never raw colour values.
+ *
+ * Spec: design-system/skill.md
+ * Theme switching: SearXNG puts one of these classes on <html>:
+ *   theme-auto (follow system), theme-light, theme-dark, theme-black
+ */
+
+:root {
+  /* ---------- Typography (system fonts only: zero downloads, zero external requests) */
+  --tern-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --tern-font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+
+  --tern-text-xs: 0.75rem;     /* 12px  meta, engine badges */
+  --tern-text-sm: 0.875rem;    /* 14px  URLs, snippets, chips */
+  --tern-text-md: 1rem;        /* 16px  body, inputs */
+  --tern-text-lg: 1.25rem;     /* 20px  result titles */
+  --tern-text-xl: 1.5rem;      /* 24px  page headings */
+  --tern-text-display: 2.75rem;/* 44px  home wordmark */
+
+  --tern-leading-tight: 1.25;
+  --tern-leading-normal: 1.5;
+
+  --tern-weight-regular: 400;
+  --tern-weight-medium: 500;
+  --tern-weight-bold: 600;
+
+  /* ---------- Spacing (4px base) */
+  --tern-space-1: 0.25rem;  /*  4px */
+  --tern-space-2: 0.5rem;   /*  8px */
+  --tern-space-3: 0.75rem;  /* 12px */
+  --tern-space-4: 1rem;     /* 16px */
+  --tern-space-5: 1.5rem;   /* 24px */
+  --tern-space-6: 2rem;     /* 32px */
+  --tern-space-7: 3rem;     /* 48px */
+  --tern-space-8: 4rem;     /* 64px */
+
+  /* ---------- Sizes */
+  --tern-size-touch: 2.75rem;        /* 44px minimum touch target */
+  --tern-size-search-home: 3.25rem;  /* 52px home search bar height */
+  --tern-size-search-header: 2.75rem;/* 44px results header search bar */
+  --tern-size-tile: 6rem;            /* 96px quick-link tile */
+  --tern-width-content: 43rem;       /* 688px result column */
+  --tern-width-search-home: 36rem;   /* 576px home search bar */
+
+  /* ---------- Radius */
+  --tern-radius-sm: 6px;
+  --tern-radius-md: 12px;
+  --tern-radius-lg: 16px;
+  --tern-radius-pill: 999px;
+
+  /* ---------- Focus ring */
+  --tern-focus-width: 3px;
+  --tern-focus-offset: 2px;
+
+  /* ---------- Motion */
+  --tern-duration-fast: 120ms;
+  --tern-duration-base: 180ms;
+  --tern-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---------- Colour: LIGHT (default) */
+  --tern-color-bg: #ffffff;
+  --tern-color-surface: #f4f7f7;
+  --tern-color-surface-raised: #ffffff;
+  --tern-color-surface-hover: #e9efef;
+  --tern-color-border: #dde4e4;
+  --tern-color-border-strong: #859191;   /* 3.25:1 on bg: input outlines */
+  --tern-color-text: #1a2323;            /* 16.1:1 on bg */
+  --tern-color-text-muted: #4d5b5b;      /* 7.1:1 on bg */
+  --tern-color-accent: #0f766e;          /* 5.5:1 on bg */
+  --tern-color-accent-hover: #115e59;
+  --tern-color-accent-soft: #ddf2ef;
+  --tern-color-on-accent: #ffffff;
+  --tern-color-link: #0d625b;            /* 7.2:1 on bg */
+  --tern-color-link-visited: #6b3fa0;    /* 7.4:1 on bg */
+  --tern-color-url: #3c6b4f;             /* 6.2:1 on bg */
+  --tern-color-focus: #0f766e;
+  --tern-color-danger: #b42318;
+  --tern-color-danger-soft: #fdeceb;
+  --tern-color-warning: #855500;
+  --tern-color-warning-soft: #fff3d6;
+  --tern-color-success: #1a7f37;
+  --tern-color-success-soft: #e4f6e8;
+  --tern-color-highlight: #1a2323;       /* matched words in snippets */
+
+  --tern-shadow-1: 0 1px 2px rgb(16 32 32 / 0.08), 0 1px 3px rgb(16 32 32 / 0.06);
+  --tern-shadow-2: 0 2px 8px rgb(16 32 32 / 0.16), 0 1px 2px rgb(16 32 32 / 0.08);
+
+  color-scheme: light;
+}
+
+/* ---------- Colour: DARK values, shared by the three ways dark can be chosen */
+:root.theme-dark,
+:root.theme-black {
+  --tern-color-bg: #121616;
+  --tern-color-surface: #1a2020;
+  --tern-color-surface-raised: #212929;
+  --tern-color-surface-hover: #2a3434;
+  --tern-color-border: #2e3939;
+  --tern-color-border-strong: #6f7d7d;   /* 4.26:1 on bg */
+  --tern-color-text: #e6ecec;            /* 15.3:1 on bg */
+  --tern-color-text-muted: #a7b4b4;      /* 8.5:1 on bg */
+  --tern-color-accent: #4fd1c5;          /* 9.8:1 on bg */
+  --tern-color-accent-hover: #81e6d9;
+  --tern-color-accent-soft: #163835;
+  --tern-color-on-accent: #062a27;
+  --tern-color-link: #7fd8cd;
+  --tern-color-link-visited: #c7aaf2;
+  --tern-color-url: #9fcfae;
+  --tern-color-focus: #4fd1c5;
+  --tern-color-danger: #ff8f85;
+  --tern-color-danger-soft: #3b1d1b;
+  --tern-color-warning: #f2c46b;
+  --tern-color-warning-soft: #3a2e14;
+  --tern-color-success: #7ee2a0;
+  --tern-color-success-soft: #173323;
+  --tern-color-highlight: #ffffff;
+
+  --tern-shadow-1: 0 1px 2px rgb(0 0 0 / 0.5);
+  --tern-shadow-2: 0 2px 10px rgb(0 0 0 / 0.6), 0 1px 2px rgb(0 0 0 / 0.4);
+
+  color-scheme: dark;
+}
+
+/* "black" = OLED variant of dark */
+:root.theme-black {
+  --tern-color-bg: #000000;
+  --tern-color-surface: #0d1111;
+  --tern-color-surface-raised: #141a1a;
+}
+
+/* "auto" follows the operating system setting */
+@media (prefers-color-scheme: dark) {
+  :root.theme-auto {
+    --tern-color-bg: #121616;
+    --tern-color-surface: #1a2020;
+    --tern-color-surface-raised: #212929;
+    --tern-color-surface-hover: #2a3434;
+    --tern-color-border: #2e3939;
+    --tern-color-border-strong: #6f7d7d;
+    --tern-color-text: #e6ecec;
+    --tern-color-text-muted: #a7b4b4;
+    --tern-color-accent: #4fd1c5;
+    --tern-color-accent-hover: #81e6d9;
+    --tern-color-accent-soft: #163835;
+    --tern-color-on-accent: #062a27;
+    --tern-color-link: #7fd8cd;
+    --tern-color-link-visited: #c7aaf2;
+    --tern-color-url: #9fcfae;
+    --tern-color-focus: #4fd1c5;
+    --tern-color-danger: #ff8f85;
+    --tern-color-danger-soft: #3b1d1b;
+    --tern-color-warning: #f2c46b;
+    --tern-color-warning-soft: #3a2e14;
+    --tern-color-success: #7ee2a0;
+    --tern-color-success-soft: #173323;
+    --tern-color-highlight: #ffffff;
+
+    --tern-shadow-1: 0 1px 2px rgb(0 0 0 / 0.5);
+    --tern-shadow-2: 0 2px 10px rgb(0 0 0 / 0.6), 0 1px 2px rgb(0 0 0 / 0.4);
+
+    color-scheme: dark;
+  }
+}
+
+/* ---------- Reduced motion: users who ask for less motion get none */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tern-duration-fast: 0ms;
+    --tern-duration-base: 0ms;
+  }
+}

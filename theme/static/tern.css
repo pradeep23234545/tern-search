@@ -1,0 +1,665 @@
+/*
+ * Tern theme for SearXNG "simple"
+ * --------------------------------
+ * Loaded after SearXNG's own stylesheet. Uses only tokens from tokens.css.
+ * Section 1 re-maps SearXNG's variables so every upstream component picks up
+ * Tern colours. Later sections restyle the key components.
+ * Spec: design-system/skill.md
+ */
+
+/* ===== 1. Bridge: SearXNG variables -> Tern tokens ====================== */
+:root,
+:root.theme-auto,
+:root.theme-light,
+:root.theme-dark,
+:root.theme-black {
+  --color-base-font: var(--tern-color-text);
+  --color-base-background: var(--tern-color-bg);
+  --color-base-background-mobile: var(--tern-color-bg);
+  --color-url-font: var(--tern-color-link);
+  --color-url-visited-font: var(--tern-color-link-visited);
+  --color-header-background: var(--tern-color-bg);
+  --color-header-border: var(--tern-color-border);
+  --color-footer-background: var(--tern-color-bg);
+  --color-footer-border: var(--tern-color-border);
+  --color-sidebar-border: var(--tern-color-border);
+  --color-sidebar-font: var(--tern-color-text);
+  --color-sidebar-background: var(--tern-color-bg);
+  --color-backtotop-font: var(--tern-color-text);
+  --color-backtotop-border: var(--tern-color-border);
+  --color-backtotop-background: var(--tern-color-surface-raised);
+  --color-btn-background: var(--tern-color-accent);
+  --color-btn-font: var(--tern-color-on-accent);
+  --color-show-btn-background: var(--tern-color-surface-hover);
+  --color-show-btn-font: var(--tern-color-text);
+  --color-search-border: var(--tern-color-border-strong);
+  --color-search-shadow: var(--tern-shadow-1);
+  --color-search-background: var(--tern-color-surface-raised);
+  --color-search-font: var(--tern-color-text);
+  --color-search-background-hover: var(--tern-color-accent);
+  --color-error: var(--tern-color-danger);
+  --color-error-background: var(--tern-color-danger-soft);
+  --color-warning: var(--tern-color-warning);
+  --color-warning-background: var(--tern-color-warning-soft);
+  --color-success: var(--tern-color-success);
+  --color-success-background: var(--tern-color-success-soft);
+  --color-categories-item-selected-font: var(--tern-color-accent);
+  --color-categories-item-border-selected: var(--tern-color-accent);
+  --color-autocomplete-font: var(--tern-color-text);
+  --color-autocomplete-border: var(--tern-color-border);
+  --color-autocomplete-shadow: var(--tern-shadow-2);
+  --color-autocomplete-background: var(--tern-color-surface-raised);
+  --color-autocomplete-background-hover: var(--tern-color-surface-hover);
+  --color-answer-font: var(--tern-color-text);
+  --color-answer-background: var(--tern-color-surface);
+  --color-result-keyvalue-col-table: var(--tern-color-surface);
+  --color-result-keyvalue-odd: var(--tern-color-surface);
+  --color-result-keyvalue-even: var(--tern-color-bg);
+  --color-result-background: var(--tern-color-bg);
+  --color-result-border: var(--tern-color-border);
+  --color-result-url-font: var(--tern-color-url);
+  --color-result-vim-selected: var(--tern-color-surface);
+  --color-result-vim-arrow: var(--tern-color-accent);
+  --color-result-description-highlight-font: var(--tern-color-highlight);
+  --color-result-link-font: var(--tern-color-link);
+  --color-result-link-font-highlight: var(--tern-color-link);
+  --color-result-link-visited-font: var(--tern-color-link-visited);
+  --color-result-publishdate-font: var(--tern-color-text-muted);
+  --color-result-engines-font: var(--tern-color-text-muted);
+  --color-result-search-url-border: var(--tern-color-border);
+  --color-result-search-url-font: var(--tern-color-text);
+  --color-result-image-span-font: var(--tern-color-text);
+  --color-result-image-background: var(--tern-color-surface);
+  --color-settings-tr-hover: var(--tern-color-surface-hover);
+  --color-settings-engine-description-font: var(--tern-color-text-muted);
+  --color-settings-table-group-background: var(--tern-color-surface);
+  --color-toolkit-badge-font: var(--tern-color-text);
+  --color-toolkit-badge-background: var(--tern-color-surface-hover);
+  --color-toolkit-dialog-border: var(--tern-color-border);
+  --color-toolkit-dialog-background: var(--tern-color-surface-raised);
+  --color-toolkit-tabs-label-border: var(--tern-color-bg);
+  --color-toolkit-tabs-section-border: var(--tern-color-border);
+  --color-toolkit-select-background: var(--tern-color-surface);
+  --color-toolkit-select-border: var(--tern-color-border-strong);
+  --color-toolkit-select-background-hover: var(--tern-color-surface-hover);
+  --color-toolkit-input-text-font: var(--tern-color-text);
+  --color-toolkit-checkbox-onoff-off-background: var(--tern-color-surface-hover);
+  --color-toolkit-checkbox-onoff-on-background: var(--tern-color-accent-soft);
+  --color-toolkit-checkbox-onoff-on-mark-background: var(--tern-color-accent);
+  --color-toolkit-checkbox-onoff-on-mark-color: var(--tern-color-on-accent);
+  --color-toolkit-checkbox-onoff-off-mark-background: var(--tern-color-border-strong);
+  --color-toolkit-checkbox-input-border: var(--tern-color-accent);
+  --color-toolkit-engine-tooltip-border: var(--tern-color-border);
+  --color-toolkit-engine-tooltip-background: var(--tern-color-surface-raised);
+  --color-favicon-background-color: var(--tern-color-surface);
+  --color-favicon-border-color: var(--tern-color-border);
+}
+
+/* ===== 2. Base ========================================================== */
+html {
+  font-family: var(--tern-font-sans);
+}
+
+body {
+  font-family: var(--tern-font-sans);
+  background: var(--tern-color-bg);
+  color: var(--tern-color-text);
+}
+
+/* One visible, consistent focus ring for everything */
+:where(a, button, input, select, textarea, summary, label, [tabindex]):focus-visible {
+  outline: var(--tern-focus-width) solid var(--tern-color-focus);
+  outline-offset: var(--tern-focus-offset);
+  border-radius: var(--tern-radius-sm);
+}
+
+.tern-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ===== 3. Top links (About / Preferences) =============================== */
+#links_on_top a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tern-space-1);
+  min-height: var(--tern-size-touch);
+  padding-inline: var(--tern-space-3);
+  border-radius: var(--tern-radius-pill);
+  color: var(--tern-color-text-muted);
+  transition: background-color var(--tern-duration-fast) var(--tern-ease);
+}
+
+#links_on_top a:hover {
+  background: var(--tern-color-surface-hover);
+  color: var(--tern-color-text);
+}
+
+#links_on_top a svg {
+  color: inherit;
+  fill: currentColor;
+}
+
+/* ===== 4. Search bar (home + header) ==================================== */
+#search .search_box {
+  border: 1px solid var(--tern-color-border-strong);
+  border-radius: var(--tern-radius-pill);
+  background: var(--tern-color-surface-raised);
+  box-shadow: var(--tern-shadow-1);
+  transition:
+    box-shadow var(--tern-duration-fast) var(--tern-ease),
+    border-color var(--tern-duration-fast) var(--tern-ease);
+}
+
+#search .search_box:hover {
+  box-shadow: var(--tern-shadow-2);
+}
+
+#search .search_box:focus-within {
+  border-color: var(--tern-color-accent);
+  box-shadow: var(--tern-shadow-2), 0 0 0 1px var(--tern-color-accent);
+}
+
+#search #q {
+  font-family: var(--tern-font-sans);
+  font-size: var(--tern-text-md);
+  color: var(--tern-color-text);
+  background: transparent;
+  padding-inline-start: var(--tern-space-5);
+  border-radius: var(--tern-radius-pill);
+}
+
+/* the container shows the focus state, so the bare input ring is redundant */
+#search #q:focus-visible {
+  outline: none;
+}
+
+#search #q::placeholder {
+  color: var(--tern-color-text-muted);
+}
+
+#search #send_search,
+#search #clear_search {
+  min-width: var(--tern-size-touch);
+  border-radius: var(--tern-radius-pill);
+  background: transparent;
+  color: var(--tern-color-text-muted);
+  transition:
+    background-color var(--tern-duration-fast) var(--tern-ease),
+    color var(--tern-duration-fast) var(--tern-ease);
+}
+
+#search #send_search:hover,
+#search #clear_search:hover {
+  background: var(--tern-color-surface-hover);
+  color: var(--tern-color-accent);
+}
+
+#search #send_search:active,
+#search #clear_search:active {
+  color: var(--tern-color-accent-hover);
+}
+
+#search #send_search svg,
+#search #clear_search svg {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* Autocomplete dropdown (upstream hides it with max-height: 0 until .open) */
+#search .autocomplete.open {
+  border: 1px solid var(--tern-color-border);
+  border-radius: var(--tern-radius-md);
+  box-shadow: var(--tern-shadow-2);
+  overflow: hidden;
+}
+
+#search .autocomplete li {
+  font-size: var(--tern-text-md);
+  padding: var(--tern-space-2) var(--tern-space-5);
+}
+
+#search .autocomplete li.active,
+#search .autocomplete li:hover {
+  background: var(--tern-color-surface-hover);
+}
+
+/* ===== 5. Home page ===================================================== */
+#main_index {
+  min-height: calc(100vh - 7rem);
+  min-height: calc(100dvh - 7rem);
+}
+
+#main_index .index.tern-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block-start: clamp(var(--tern-space-6), 14vh, 9rem);
+  padding-inline: var(--tern-space-4);
+  margin: 0 auto;
+}
+
+/* upstream draws the SearXNG logo as a background and hides the h1 */
+.index .title.tern-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tern-space-3);
+  width: auto;
+  height: auto;
+  margin: 0 0 var(--tern-space-6);
+  background: none;
+}
+
+.index .title.tern-brand h1 {
+  visibility: visible;
+}
+
+.tern-brand .tern-mark {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: none;
+}
+
+.index .title.tern-brand h1 {
+  margin: 0;
+  font-size: var(--tern-text-display);
+  font-weight: var(--tern-weight-bold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--tern-color-text);
+}
+
+#main_index .tern-home #search {
+  width: 100%;
+  max-width: var(--tern-width-search-home);
+}
+
+#main_index .tern-home #search .search_box {
+  height: var(--tern-size-search-home);
+}
+
+#main_index .tern-home #search #q {
+  height: 100%;
+}
+
+.tern-home__hint {
+  margin: var(--tern-space-3) 0 0;
+  font-size: var(--tern-text-sm);
+  color: var(--tern-color-text-muted);
+}
+
+.tern-home__hint kbd {
+  font-family: var(--tern-font-mono);
+  font-size: var(--tern-text-xs);
+  padding: 0 var(--tern-space-1);
+  border: 1px solid var(--tern-color-border-strong);
+  border-radius: var(--tern-radius-sm);
+  background: var(--tern-color-surface);
+  color: var(--tern-color-text);
+}
+
+/* Preferences / About / Stats header */
+.tern-page-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tern-space-2);
+  min-height: var(--tern-size-touch);
+  color: var(--tern-color-text);
+  font-size: var(--tern-text-xl);
+  font-weight: var(--tern-weight-bold);
+  text-decoration: none;
+}
+
+.tern-page-brand .tern-mark {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+/* ===== 6. Quick-link tiles ============================================== */
+.tern-quicklinks {
+  width: 100%;
+  max-width: calc(var(--tern-size-tile) * 4 + var(--tern-space-3) * 3);
+  margin-block-start: var(--tern-space-7);
+}
+
+.tern-quicklinks ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--tern-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tern-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tern-space-2);
+  min-height: var(--tern-size-tile);
+  padding: var(--tern-space-2);
+  border-radius: var(--tern-radius-lg);
+  color: var(--tern-color-text);
+  text-decoration: none;
+  transition: background-color var(--tern-duration-fast) var(--tern-ease);
+}
+
+.tern-tile:hover {
+  background: var(--tern-color-surface-hover);
+  text-decoration: none;
+}
+
+.tern-tile:active {
+  background: var(--tern-color-surface);
+}
+
+.tern-tile:focus-visible {
+  border-radius: var(--tern-radius-lg);
+}
+
+.tern-tile__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--tern-radius-pill);
+  background: var(--tern-color-accent-soft);
+  color: var(--tern-color-accent);
+  font-size: var(--tern-text-lg);
+  font-weight: var(--tern-weight-bold);
+}
+
+.tern-tile__label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--tern-text-sm);
+}
+
+/* ===== 7. Results header + category chips =============================== */
+#search_header {
+  column-gap: var(--tern-space-4);
+}
+
+#search_logo svg {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+#categories .category button,
+#categories .category label,
+#categories button.category {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tern-space-1);
+  min-height: 2.25rem;
+  padding: var(--tern-space-2) var(--tern-space-3);
+  border: 0;
+  border-radius: var(--tern-radius-pill);
+  background: transparent;
+  color: var(--tern-color-text-muted);
+  font-size: var(--tern-text-sm);
+  transition: background-color var(--tern-duration-fast) var(--tern-ease);
+}
+
+/* upstream sets "padding: 1rem !important" on chips; !important is the only way to win */
+#categories .category_checkbox label,
+#categories .category_button {
+  padding: var(--tern-space-2) var(--tern-space-3) !important;
+}
+
+#main_preferences #categories .category label {
+  border: 2px solid transparent;
+  border-radius: var(--tern-radius-pill);
+}
+
+#main_preferences #categories .category input:checked + label {
+  border-color: var(--tern-color-accent);
+}
+
+#categories button.category:hover,
+#categories .category label:hover {
+  background: var(--tern-color-surface-hover);
+  color: var(--tern-color-text);
+}
+
+#categories button.category.selected,
+#categories .category input:checked + label {
+  background: var(--tern-color-accent-soft);
+  color: var(--tern-color-accent);
+  font-weight: var(--tern-weight-bold);
+  border-bottom: 0;
+}
+
+#categories button.category svg,
+#categories .category label svg {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+#categories_container {
+  gap: var(--tern-space-1);
+}
+
+/* ===== 8. Results ======================================================= */
+#urls {
+  max-width: var(--tern-width-content);
+}
+
+#urls article.result {
+  padding: var(--tern-space-4) 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--tern-color-border);
+  border-radius: 0;
+  background: transparent;
+  overflow-wrap: anywhere;
+}
+
+#urls article.result:last-of-type {
+  border-bottom: 0;
+}
+
+#urls article.result .url_header,
+#urls article.result .url_wrapper {
+  font-size: var(--tern-text-sm);
+  color: var(--tern-color-url);
+}
+
+#urls article.result h3 {
+  margin: var(--tern-space-1) 0;
+  font-size: var(--tern-text-lg);
+  font-weight: var(--tern-weight-regular);
+  line-height: var(--tern-leading-tight);
+}
+
+#urls article.result h3 a {
+  color: var(--tern-color-link);
+  text-decoration: none;
+}
+
+#urls article.result h3 a:visited {
+  color: var(--tern-color-link-visited);
+}
+
+#urls article.result h3 a:hover,
+#urls article.result h3 a:focus-visible {
+  text-decoration: underline;
+}
+
+#urls article.result .content {
+  font-size: var(--tern-text-sm);
+  line-height: var(--tern-leading-normal);
+  color: var(--tern-color-text-muted);
+}
+
+#urls article.result .content .highlight {
+  color: var(--tern-color-highlight);
+  font-weight: var(--tern-weight-bold);
+}
+
+#urls article.result .empty_element {
+  font-style: italic;
+}
+
+#urls article.result .engines {
+  font-size: var(--tern-text-xs);
+  color: var(--tern-color-text-muted);
+}
+
+#urls article.result .engines span {
+  padding: 0 var(--tern-space-1);
+  border-radius: var(--tern-radius-sm);
+  background: var(--tern-color-surface);
+}
+
+/* Sidebar cards: infobox, suggestions, engine messages */
+#sidebar #infoboxes,
+#sidebar #suggestions,
+#sidebar #engines_msg,
+#sidebar #apis,
+#answers {
+  border: 1px solid var(--tern-color-border);
+  border-radius: var(--tern-radius-md);
+  background: var(--tern-color-surface);
+}
+
+/* No results is not a failure: neutral surface, not red */
+#urls .dialog-error-block {
+  padding: var(--tern-space-5);
+  border: 1px solid var(--tern-color-border);
+  border-radius: var(--tern-radius-md);
+  background: var(--tern-color-surface);
+  color: var(--tern-color-text);
+}
+
+/* Real errors */
+.dialog-error {
+  border: 1px solid var(--tern-color-danger);
+  border-radius: var(--tern-radius-md);
+  background: var(--tern-color-danger-soft);
+  color: var(--tern-color-text);
+}
+
+/* ===== 9. Pagination ==================================================== */
+#pagination button,
+#pagination input[type="submit"] {
+  min-height: var(--tern-size-touch);
+  min-width: var(--tern-size-touch);
+  padding: 0 var(--tern-space-4);
+  border: 1px solid var(--tern-color-border);
+  border-radius: var(--tern-radius-pill);
+  background: var(--tern-color-surface);
+  color: var(--tern-color-text);
+  font-size: var(--tern-text-sm);
+  cursor: pointer;
+  transition: background-color var(--tern-duration-fast) var(--tern-ease);
+}
+
+#pagination button:hover,
+#pagination input[type="submit"]:hover {
+  background: var(--tern-color-surface-hover);
+}
+
+#pagination .page_number_current {
+  background: var(--tern-color-accent);
+  border-color: var(--tern-color-accent);
+  color: var(--tern-color-on-accent);
+}
+
+/* ===== 10. Buttons & form controls (preferences etc.) =================== */
+input[type="submit"],
+button.button,
+.button {
+  border-radius: var(--tern-radius-pill);
+}
+
+#main_preferences input[type="submit"],
+#main_preferences .button {
+  min-height: var(--tern-size-touch);
+  padding: 0 var(--tern-space-5);
+  background: var(--tern-color-accent);
+  color: var(--tern-color-on-accent);
+  border: 0;
+  font-weight: var(--tern-weight-medium);
+  transition: background-color var(--tern-duration-fast) var(--tern-ease);
+}
+
+#main_preferences input[type="submit"]:hover,
+#main_preferences .button:hover {
+  background: var(--tern-color-accent-hover);
+}
+
+#main_preferences select,
+#main_preferences input[type="text"],
+#main_preferences input[type="number"] {
+  min-height: var(--tern-size-touch);
+  border: 1px solid var(--tern-color-border-strong);
+  border-radius: var(--tern-radius-sm);
+  font-size: var(--tern-text-md);
+}
+
+#main_preferences .tabs > label {
+  border-radius: var(--tern-radius-pill) var(--tern-radius-pill) 0 0;
+}
+
+#main_preferences table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* ===== 11. Footer ======================================================= */
+footer {
+  font-size: var(--tern-text-xs);
+  color: var(--tern-color-text-muted);
+}
+
+footer a {
+  color: var(--tern-color-link);
+}
+
+/* ===== 12. Responsive =================================================== */
+@media screen and (max-width: 599px) {
+  .index .title.tern-brand h1 {
+    font-size: var(--tern-text-xl);
+  }
+
+  .tern-brand .tern-mark {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .tern-quicklinks ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* leave room for the 44px Preferences button at the top right */
+  #main_results #search_view {
+    padding-inline-end: calc(var(--tern-size-touch) + var(--tern-space-4));
+  }
+
+  #categories_container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  #urls article.result {
+    padding-inline: var(--tern-space-4);
+  }
+}
+
+/* ===== 13. Disabled (shared) ============================================ */
+:where(button, input, select, textarea)[disabled],
+[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

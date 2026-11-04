@@ -622,11 +622,11 @@ Tern's own code (theme CSS, scripts, configuration, docs) is released under the 
 
 ## 👤 Author
 
-**[Your Name]**
-B.Tech CSBS · [Your College]
+**[Pradeep Dilip Yedage]**
+B.Tech CSBS · [Ramrao Adik Institute Of Technology]
 
 - GitHub: [@pradeep23234545](https://github.com/pradeep23234545)
-- LinkedIn: [your LinkedIn URL]
+- LinkedIn: [https://www.linkedin.com/in/pradeep-yedage-b474a0325/]
 
 If this project helped you, consider giving it a ⭐ on GitHub.
 

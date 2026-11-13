@@ -210,7 +210,7 @@ Tern ships as real apps, so you don't need the command line to use it.
 |---|---|---|
 | **Windows 10/11** | `Tern-Setup-x.y.z.exe` (installer) or `Tern-Portable-x.y.z.exe` | Runs your own search server with Docker Desktop and opens it in its own window |
 | **macOS** (Intel + Apple Silicon) | `Tern-x.y.z-mac-arm64.dmg` / `-x64.dmg` | Same as Windows |
-| **Linux** | `Tern-x.y.z-linux-x86_64.AppImage` or `.deb` | Same as Windows (Docker Engine or Docker Desktop) |
+| **Linux** | Build it yourself: `cd apps/desktop && npm install && npm run dist:linux` | Same as Windows (Docker Engine or Docker Desktop) |
 | **Android 7+** | `Tern-x.y.z-android.apk` | Connects to the Tern server on your computer or VPS |
 
 ### Desktop app

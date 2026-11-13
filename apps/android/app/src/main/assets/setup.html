@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'">
+<title>Tern</title>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #f4f7f7; --border: #dde4e4; --border-strong: #859191;
+    --text: #1a2323; --muted: #4d5b5b; --accent: #0f766e; --accent-soft: #ddf2ef; --on-accent: #ffffff;
+    --danger: #b42318; --danger-soft: #fdeceb; --success: #1a7f37;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121616; --surface: #1a2020; --border: #2e3939; --border-strong: #6f7d7d;
+      --text: #e6ecec; --muted: #a7b4b4; --accent: #4fd1c5; --accent-soft: #163835; --on-accent: #062a27;
+      --danger: #ff8f85; --danger-soft: #3b1d1b; --success: #7ee2a0;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, Roboto, "Noto Sans", sans-serif;
+  }
+  main { max-width: 520px; margin: 0 auto; padding: 40px 16px 32px; }
+  .logo { display: block; width: 64px; height: 64px; margin: 0 auto 12px; }
+  h1 { text-align: center; font-size: 1.6rem; margin: 0 0 4px; }
+  .lead { text-align: center; color: var(--muted); margin: 0 0 28px; }
+  label { display: block; font-weight: 600; margin-bottom: 8px; }
+  input {
+    font: inherit; width: 100%; min-height: 52px; padding: 0 16px;
+    border-radius: 999px; border: 1px solid var(--border-strong);
+    background: var(--bg); color: var(--text);
+  }
+  input:focus { outline: 3px solid var(--accent); outline-offset: 1px; }
+  .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  button {
+    font: inherit; min-height: 48px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--border-strong); background: transparent; color: var(--text);
+  }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+  button:disabled { opacity: .5; }
+  .result { min-height: 1.5em; margin: 12px 0 0; font-size: .95rem; }
+  .ok { color: var(--success); } .bad { color: var(--danger); }
+  .error {
+    background: var(--danger-soft); color: var(--danger); border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 20px;
+  }
+  .error button { margin-top: 10px; width: 100%; border-color: var(--danger); color: var(--danger); }
+  .help { margin-top: 32px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+  .help h2 { font-size: 1rem; margin: 0 0 8px; }
+  .help ol { margin: 0; padding-left: 20px; }
+  .help li { margin-bottom: 6px; }
+  .help code { font-size: .9em; background: var(--accent-soft); padding: 1px 6px; border-radius: 6px; }
+  .examples { color: var(--muted); font-size: .9rem; margin-top: 8px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#0f766e"/><path d="M10 31 Q21 19 32 30 Q43 19 54 31 Q43 25 32 40 Q21 25 10 31 Z" fill="#fff"/></svg>
+  <h1>Tern</h1>
+  <p class="lead">Private search through your own server.</p>
+
+  <div class="error hidden" id="error" role="alert">
+    <div id="errorText"></div>
+    <button type="button" id="retry">Try again</button>
+  </div>
+
+  <form id="form">
+    <label for="url">Your Tern server address</label>
+    <input id="url" type="text" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false"
+           placeholder="192.168.1.20:8888">
+    <p class="examples">Examples: <code>192.168.1.20:8888</code> · <code>100.64.0.5:8888</code> (Tailscale) · <code>https://search.example.org</code></p>
+    <div class="buttons">
+      <button type="button" id="test">Test</button>
+      <button type="submit" class="primary" id="save">Connect</button>
+    </div>
+    <p class="result" id="result" role="status"></p>
+  </form>
+
+  <section class="help">
+    <h2>Where do I find the address?</h2>
+    <ol>
+      <li>On your computer, open the <strong>Tern</strong> desktop app.</li>
+      <li>Go to <strong>Settings → Use Tern on your phone</strong> and turn on <em>Share with devices on my Wi-Fi</em>.</li>
+      <li>Type the address it shows here. Your phone must be on the same Wi-Fi.</li>
+    </ol>
+    <p class="examples">Away from home? Install Tailscale (free) on both devices and use your computer's Tailscale address.</p>
+  </section>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  const app = window.TernApp;
+  let pending = null;
+
+  const saved = params.get('server') || (app ? app.getServer() : '');
+  if (saved) $('url').value = saved;
+
+  const err = params.get('error');
+  if (err && saved) {
+    $('errorText').textContent = err;
+    $('error').classList.remove('hidden');
+  }
+  $('retry').addEventListener('click', () => app && app.retry());
+
+  function setResult(text, cls) {
+    $('result').textContent = text;
+    $('result').className = 'result ' + (cls || '');
+  }
+
+  function test(then) {
+    const value = $('url').value.trim();
+    if (!value) { setResult('Enter the address first.', 'bad'); $('url').focus(); return; }
+    if (!app) { setResult('Open this page in the Tern app.', 'bad'); return; }
+    $('test').disabled = $('save').disabled = true;
+    setResult('Checking…');
+    pending = { id: String(Date.now()), then };
+    app.test(pending.id, value);
+  }
+
+  window.onTernTest = (id, ok, url) => {
+    if (!pending || pending.id !== id) return;
+    const then = pending.then;
+    pending = null;
+    $('test').disabled = $('save').disabled = false;
+    if (ok) {
+      setResult('Connected to ' + url, 'ok');
+      if (then) then(url);
+    } else {
+      setResult("No answer from that address. Check it, check the server is running with Wi-Fi sharing on, and that your phone is on the same network.", 'bad');
+    }
+  };
+
+  $('test').addEventListener('click', () => test());
+  $('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    test((url) => app.save(url));
+  });
+</script>
+</body>
+</html>

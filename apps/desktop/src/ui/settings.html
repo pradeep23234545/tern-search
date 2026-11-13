@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:">
+  <title>Tern settings</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <form class="settings" id="form" novalidate>
+    <header>
+      <img src="logo.svg" alt="">
+      <h1>Settings</h1>
+    </header>
+
+    <section class="card" aria-labelledby="h-server">
+      <h2 id="h-server">Search server</h2>
+      <div class="choice" role="radiogroup" aria-labelledby="h-server">
+        <label>
+          <input type="radio" name="mode" value="local">
+          <strong>Run Tern on this computer</strong>
+          <small>Uses Docker Desktop. Nothing leaves your computer except the searches Tern makes for you.</small>
+        </label>
+        <label>
+          <input type="radio" name="mode" value="remote">
+          <strong>Use a Tern server on another computer</strong>
+          <small>For example your home PC, a Raspberry Pi or a VPS. Docker is not needed on this device.</small>
+        </label>
+      </div>
+
+      <div id="localFields">
+        <label class="field">
+          <span>Port</span>
+          <input type="number" name="port" min="1024" max="65535" inputmode="numeric">
+          <small>Change it only if another program already uses 8888.</small>
+        </label>
+      </div>
+
+      <div id="remoteFields">
+        <label class="field" for="remoteUrl"><span>Server address</span></label>
+        <div class="row">
+          <input type="url" id="remoteUrl" name="remoteUrl" placeholder="http://192.168.1.20:8888" spellcheck="false" autocomplete="off">
+          <button type="button" id="testBtn">Test</button>
+        </div>
+        <p class="test-result" id="testResult" role="status"></p>
+      </div>
+    </section>
+
+    <section class="card" id="phone" aria-labelledby="h-phone">
+      <h2 id="h-phone">Use Tern on your phone</h2>
+      <label class="toggle" id="lanToggle">
+        <span>Share with devices on my Wi-Fi</span>
+        <input type="checkbox" name="lan">
+        <small>Lets your phone, tablet or other computers on the same network search through this computer. Off by default.</small>
+      </label>
+      <div id="phoneInfo" class="phone hidden">
+        <img id="qr" alt="QR code with the server address">
+        <div>
+          <p>In the <strong>Tern Android app</strong>, enter this address, or scan the code to open it in your phone's browser:</p>
+          <p><code id="phoneUrl"></code></p>
+          <p class="muted hidden" id="otherUrls"></p>
+          <p class="muted">If it doesn't open, allow Docker Desktop through your firewall for private networks. Away from home, use Tailscale (free) instead.</p>
+        </div>
+      </div>
+      <p id="phoneOff" class="muted hidden">Turn on sharing and save to see the address for your phone.</p>
+    </section>
+
+    <section class="card" aria-labelledby="h-app">
+      <h2 id="h-app">App</h2>
+      <label class="toggle">
+        <span>Open search results in my default browser</span>
+        <input type="checkbox" name="openLinksExternally">
+        <small>Keeps Tern for searching and your usual browser for reading. Turn off to open pages inside Tern.</small>
+      </label>
+      <label class="toggle" id="stopToggle">
+        <span>Stop the search server when I quit Tern</span>
+        <input type="checkbox" name="stopOnQuit">
+        <small>Frees memory. Turn off if your phone uses this computer as its server.</small>
+      </label>
+      <label class="toggle">
+        <span>Start Tern when I sign in</span>
+        <input type="checkbox" name="openAtLogin">
+        <small>Starts quietly in the tray so search is ready when you need it.</small>
+      </label>
+    </section>
+
+    <p class="muted" id="version"></p>
+
+    <footer class="bar">
+      <span class="msg" id="msg" role="status"></span>
+      <button type="button" id="cancel">Close</button>
+      <button type="submit" class="primary" id="save">Save</button>
+    </footer>
+  </form>
+  <script src="settings.js"></script>
+</body>
+</html>

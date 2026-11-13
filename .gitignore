@@ -20,3 +20,11 @@ __pycache__/
 # Exported report files (regenerate from Markdown)
 docs/*.pdf
 docs/*.docx
+
+# App builds (publish them as GitHub Release files instead of committing)
+node_modules/
+apps/desktop/dist/
+/dist/
+/Tern.exe
+# Local test copy of the server used by the desktop app in development
+.tern-dev-server/

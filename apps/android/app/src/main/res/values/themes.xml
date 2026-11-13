@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Tern" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorAccent">@color/tern_accent</item>
+        <item name="android:colorPrimary">@color/tern_accent</item>
+        <item name="android:windowBackground">@color/tern_bg</item>
+        <item name="android:statusBarColor">@color/tern_bg</item>
+        <item name="android:navigationBarColor">@color/tern_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

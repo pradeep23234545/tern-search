@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:">
+  <title>Tern</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="status" id="root" aria-live="polite">
+    <div class="status-card">
+      <img class="logo" src="logo.svg" alt="">
+      <h1 class="title" id="title">Starting Tern</h1>
+      <p class="detail" id="detail"></p>
+      <ol class="steps" id="steps" aria-label="Progress">
+        <li data-step="1">Docker</li>
+        <li data-step="2">Search server</li>
+        <li data-step="3">Ready</li>
+      </ol>
+      <div class="spinner" id="spinner" role="progressbar" aria-label="Working"></div>
+      <div class="actions" id="actions"></div>
+      <details class="log hidden" id="logBox">
+        <summary>Details</summary>
+        <pre id="log"></pre>
+      </details>
+    </div>
+  </main>
+  <script src="status.js"></script>
+</body>
+</html>

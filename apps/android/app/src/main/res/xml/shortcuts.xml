@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="new_search"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_new_search">
+        <intent
+            android:action="org.tern.search.NEW_SEARCH"
+            android:targetPackage="org.tern.search"
+            android:targetClass="org.tern.search.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="change_server"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_change_server">
+        <intent
+            android:action="org.tern.search.CHANGE_SERVER"
+            android:targetPackage="org.tern.search"
+            android:targetClass="org.tern.search.MainActivity" />
+    </shortcut>
+</shortcuts>

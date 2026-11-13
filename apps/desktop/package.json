@@ -1,0 +1,132 @@
+{
+  "name": "tern-desktop",
+  "productName": "Tern",
+  "version": "1.1.0",
+  "description": "Tern private search: desktop app that runs your own SearXNG server and opens it in its own window.",
+  "author": "Pradeep Dilip Yedage",
+  "license": "MIT",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check src/main.js && node --check src/server.js && node --check src/settings.js && node --check src/preload.js",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "electron": "^45.3.1",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "org.tern.search",
+    "productName": "Tern",
+    "copyright": "Copyright © 2026 Pradeep Dilip Yedage",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "build/icon.png",
+      "build/icon.ico",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../../docker-compose.yml",
+        "to": "server/docker-compose.yml"
+      },
+      {
+        "from": "../../.env.example",
+        "to": "server/.env.example"
+      },
+      {
+        "from": "../../core-config",
+        "to": "server/core-config"
+      },
+      {
+        "from": "../../theme",
+        "to": "server/theme",
+        "filter": [
+          "**/*",
+          "!upstream-snapshot/**"
+        ]
+      },
+      {
+        "from": "../../caddy",
+        "to": "server/caddy"
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Tern",
+      "artifactName": "Tern-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Tern-Portable-${version}.${ext}"
+    },
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "artifactName": "Tern-${version}-mac-${arch}.${ext}",
+      "identity": "-",
+      "hardenedRuntime": false
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Network",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "artifactName": "Tern-${version}-linux-${arch}.${ext}",
+      "maintainer": "Pradeep Dilip Yedage",
+      "synopsis": "Private search on your own SearXNG server"
+    }
+  },
+  "allowScripts": {
+    "electron@45.3.1": true
+  }
+}

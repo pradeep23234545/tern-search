@@ -8,7 +8,7 @@
 
 Search the web through your own server. Results from many engines, no ads, no trackers, no profile.
 
-[Features](#-features) · [How it differs](#-how-tern-is-different) · [Quick start](#-quick-start) · [Configuration](#%EF%B8%8F-configuration) · [Customise](#-customising-the-look) · [Structure](#-project-structure) · [Docs](#-documentation)
+[Features](#-features) · [How it differs](#-how-tern-is-different) · [Apps](#-apps-windows-macos-linux-android) · [Quick start](#-quick-start) · [Configuration](#%EF%B8%8F-configuration) · [Customise](#-customising-the-look) · [Structure](#-project-structure) · [Docs](#-documentation)
 
 </div>
 
@@ -23,6 +23,7 @@ Search the web through your own server. Results from many engines, no ads, no tr
 - [Tech stack](#-tech-stack)
 - [Architecture](#-architecture)
 - [Requirements](#-requirements)
+- [Apps: Windows, macOS, Linux, Android](#-apps-windows-macos-linux-android)
 - [Quick start](#-quick-start)
 - [Configuration](#%EF%B8%8F-configuration)
 - [Using Tern](#-using-tern)
@@ -198,6 +199,70 @@ More detail: [`docs/01-blueprint.md`](docs/01-blueprint.md).
 | Network | Internet access (outgoing HTTPS) | |
 
 Everything is free. No paid cloud, domain, font or software is required.
+
+---
+
+## 📦 Apps: Windows, macOS, Linux, Android
+
+Tern ships as real apps, so you don't need the command line to use it.
+
+| Platform | Download (from [Releases](https://github.com/pradeep23234545/tern-search/releases/latest)) | What it does |
+|---|---|---|
+| **Windows 10/11** | `Tern-Setup-x.y.z.exe` (installer) or `Tern-Portable-x.y.z.exe` | Runs your own search server with Docker Desktop and opens it in its own window |
+| **macOS** (Intel + Apple Silicon) | `Tern-x.y.z-mac-arm64.dmg` / `-x64.dmg` | Same as Windows |
+| **Linux** | `Tern-x.y.z-linux-x86_64.AppImage` or `.deb` | Same as Windows (Docker Engine or Docker Desktop) |
+| **Android 7+** | `Tern-x.y.z-android.apk` | Connects to the Tern server on your computer or VPS |
+
+### Desktop app
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (free) and open it once.
+2. Install and open **Tern**. On first start it downloads the search engine (about 150 MB) and opens it. After that it starts in a few seconds.
+
+What you get:
+
+- **One click start.** Tern starts Docker Desktop if needed, then the server, and shows progress and clear errors (port in use, Docker missing…).
+- **Tray icon:** open Tern, open it in your normal browser, restart or stop the server. Closing the window keeps Tern in the tray.
+- **Results open in your default browser** (can be switched off), so Tern stays your search box.
+- **Settings:** port, start with your computer, stop the server on quit, and **use a Tern server on another computer** (no Docker needed on that device).
+- **Use Tern on your phone:** one switch shares the server on your Wi-Fi and shows the address and a QR code.
+- **Server menu:** update the search engine, view logs, open the server folder.
+- Keyboard: `Ctrl/Cmd+L` focus search, `Ctrl/Cmd+N` new search, `Alt+←/→` back/forward, `Ctrl/Cmd+,` settings.
+
+Your server files and secret key live in the app's data folder (`%APPDATA%\Tern\server` on Windows, `~/Library/Application Support/Tern/server` on macOS, `~/.config/Tern/server` on Linux). Edits you make to `core-config/settings.yml` there are kept when the app updates.
+
+> **macOS:** the app isn't notarised by Apple. The first time, right-click Tern → **Open** → **Open**. If macOS says it's damaged, run `xattr -cr /Applications/Tern.app`.
+> **Windows:** SmartScreen may warn because the app isn't code-signed. Click **More info → Run anyway**.
+
+### Android app
+
+The search engine itself (SearXNG) can't run on a phone, so the Android app connects to the Tern server on your computer, Raspberry Pi or VPS:
+
+1. On your computer: Tern → **Settings → Use Tern on your phone** → turn on **Share with devices on my Wi-Fi** → Save.
+2. On the phone: install the APK (allow "Install unknown apps" for your browser/files app), open Tern, type the address shown on the computer, tap **Connect**.
+
+Extras: **Search with Tern** in Android's text-selection menu and share sheet, home-screen shortcuts (*New search*, *Change server*), pull to refresh, dark mode, results open in your browser. Away from home, use [Tailscale](https://tailscale.com/) and your computer's Tailscale address.
+
+**iPhone / iPad:** open your Tern address in Safari → Share → **Add to Home Screen**. Tern is an installable web app with its own icon.
+
+### Build the apps yourself
+
+Pushing to GitHub builds everything automatically ([`.github/workflows/build-apps.yml`](.github/workflows/build-apps.yml)). Push a tag to publish a release:
+
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+
+Locally:
+
+```bash
+cd apps/desktop
+npm install
+npm start              # run in development
+npm run dist:win       # or dist:mac / dist:linux (each on its own OS)
+```
+
+Android: open `apps/android` in Android Studio and press **Run**, or with JDK 17 + Gradle 8.11: `gradle assembleRelease`. To sign with your own key, set `TERN_KEYSTORE_PATH`, `TERN_KEYSTORE_PASSWORD`, `TERN_KEY_ALIAS`, `TERN_KEY_PASSWORD` (or the `ANDROID_*` secrets listed in the workflow).
 
 ---
 
@@ -382,6 +447,12 @@ The full rules are in the design system: [`design-system/skill.md`](design-syste
 tern-search/
 ├── README.md                      ← you are here
 ├── LICENSE                        MIT (with an AGPL exception for SearXNG-derived templates)
+├── apps/
+│   ├── desktop/                   Electron app for Windows, macOS, Linux (runs the server with Docker)
+│   └── android/                   Android app (Kotlin) that connects to your Tern server
+├── .github/workflows/
+│   └── build-apps.yml             Builds all apps on every push; publishes a Release for v* tags
+│
 ├── docker-compose.yml             Services: core (SearXNG), valkey (cache), caddy (optional HTTPS)
 ├── .env.example                   Template for .env (copy it; .env holds your secret)
 ├── .gitignore                     Keeps .env, logs and backups out of Git
@@ -555,6 +626,8 @@ Full table: [`docs/05-troubleshooting.md`](docs/05-troubleshooting.md).
 - [x] Light / dark / black modes, keyboard shortcuts, responsive layout
 - [x] JSON API, stats page, safe search
 - [x] Update checker, contrast checker, icon generator
+- [x] Desktop apps for Windows, macOS and Linux
+- [x] Android app, "Search with Tern" from any app
 - [ ] Secure phone access with Tailscale
 - [ ] Always-on free cloud deployment
 - [ ] Edit quick links from the UI (stored on the device)
@@ -622,11 +695,11 @@ Tern's own code (theme CSS, scripts, configuration, docs) is released under the 
 
 ## 👤 Author
 
-**[Pradeep Dilip Yedage]**
-B.Tech CSBS · [Ramrao Adik Institute Of Technology]
+**Pradeep Dilip Yedage**
+B.Tech CSBS · Ramrao Adik Institute Of Technology
 
 - GitHub: [@pradeep23234545](https://github.com/pradeep23234545)
-- LinkedIn: [https://www.linkedin.com/in/pradeep-yedage-b474a0325/]
+- LinkedIn: [pradeep-yedage-b474a0325](https://www.linkedin.com/in/pradeep-yedage-b474a0325/)
 
 If this project helped you, consider giving it a ⭐ on GitHub.
 
